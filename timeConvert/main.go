@@ -8,20 +8,20 @@ import (
 )
 
 var (
-	app      *cli.App
-	mode     RUN_MODE // run mode
-	seconds  = true   // use milliseconds
-	str_date = false  // yyyy-MM-dd
-	input    = ""     // user input value
-	input2   = ""
+	app     *cli.App
+	mode    RunMode // run mode
+	seconds = true  // use milliseconds
+	strDate = false // yyyy-MM-dd
+	input   = ""    // user input value
+	input2  = ""
 )
 
 const (
-	TS RUN_MODE = 1 // time to str
-	ST RUN_MODE = 2 // str to time
+	TS RunMode = 1 // time to str
+	ST RunMode = 2 // str to time
 )
 
-type RUN_MODE int8
+type RunMode int8
 
 func main() {
 	setCmd()
@@ -48,7 +48,7 @@ func setCmd() {
 		cli.BoolFlag{
 			Name:        "date, d",
 			Usage:       "str with date only yyyy-MM-dd, dafault datetime yyyy-MM-dd hh:mm:ss",
-			Destination: &str_date,
+			Destination: &strDate,
 		},
 	}
 	app.Commands = []cli.Command{
@@ -86,7 +86,7 @@ func outputMode() bool {
 		println("time format:", "seconds")
 	}
 
-	if str_date {
+	if strDate {
 		println("str format:", "yyyy-MM-dd")
 	} else {
 		println("str format:", "yyyy-MM-dd hh:mm:ss")
@@ -125,7 +125,7 @@ func transTimeToStr() {
 		itTime = time.Unix(0, int64(atoi*1000000))
 	}
 	itTime = itTime.Add(-8 * time.Hour)
-	if str_date {
+	if strDate {
 		println(itTime.Format("2006-01-02"))
 	} else {
 		println(itTime.Format("2006-01-02 15:04:05"))
@@ -135,17 +135,19 @@ func transTimeToStr() {
 func transStrToTime() {
 	var parse time.Time
 	var err error
-	if str_date {
+	if strDate {
 		parse, err = time.Parse("2006-01-02", input)
 	} else {
 		parse, err = time.Parse("2006-01-02 15:04:05", input+" "+input2)
 	}
-	parse = parse.Add(-8 * time.Hour)
 	if err != nil {
 		println("error input val format")
 		println(err)
 		return
 	}
+
+	parse = parse.Add(-8 * time.Hour)
+
 	if !seconds {
 		println(parse.UnixNano() / 1000000)
 	} else {
