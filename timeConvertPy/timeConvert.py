@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys
 import time
 # noinspection PyProtectedMember
@@ -16,8 +17,8 @@ class TransInvoker:
         self.time: str = kw.get('time')  # 输入时间
         self.cmd: str = kw.get('cmd')  # 执行命令
         self.time_num: int = kw.get('time_num')  # 数字格式时间
-        self.use_second: bool = kw['second']  # 使用毫秒作为时间
-        self.date_only: bool = kw['date_only']  # 仅包含日期
+        self.use_second: bool = kw.get('second')  # 使用毫秒作为时间
+        self.date_only: bool = kw.get('date_only')  # 仅包含日期
         self.run_method: int = \
             TransInvoker.STR_TO_TIME if self.cmd == "s" else TransInvoker.TIME_TO_STR  # 运行模式
 
@@ -116,7 +117,7 @@ def parseInput(nn: Namespace) -> TransInvoker:
     if nn.cmd == 's':
         return TransInvoker(date=nn.date, time=nn.time, cmd=nn.cmd,
                             date_only=nn.day_only, second=nn.use_second)
-    else:
+    elif nn.cmd == 't':
         return TransInvoker(date_only=nn.day_only, second=nn.use_second, cmd=nn.cmd,
                             time_num=nn.time_num)
 
@@ -124,5 +125,8 @@ def parseInput(nn: Namespace) -> TransInvoker:
 if __name__ == '__main__':
     parser: ArgumentParser = genParser()  # 生成分析器
     parse_input: TransInvoker = parseInput(parser.parse_args(sys.argv[1:]))
+    if not parse_input:
+        print("error, use " + sys.argv[0] + " -h to get help")
+        exit(1)
     parse_input.do_run()
     pass
