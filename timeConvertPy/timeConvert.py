@@ -14,7 +14,7 @@ class TransInvoker:
     def __init__(self, **kw):
         self.date: str = kw.get('date')  # 输入日期
         self.time: str = kw.get('time')  # 输入时间
-        self.cmd: str = kw['cmd']  # 执行命令
+        self.cmd: str = kw.get('cmd')  # 执行命令
         self.time_num: int = kw.get('time_num')  # 数字格式时间
         self.use_second: bool = kw['second']  # 使用毫秒作为时间
         self.date_only: bool = kw['date_only']  # 仅包含日期
