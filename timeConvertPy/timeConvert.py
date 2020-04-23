@@ -127,6 +127,6 @@ if __name__ == '__main__':
     parse_input: TransInvoker = parseInput(parser.parse_args(sys.argv[1:]))
     if not parse_input:
         print("error, use " + sys.argv[0] + " -h to get help")
-        exit(1)
+        sys.exit(-1)
     parse_input.do_run()
     pass
