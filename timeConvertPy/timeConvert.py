@@ -13,10 +13,10 @@ class TransInvoker:
     STR_TO_TIME = 2
 
     def __init__(self, **kw):
-        self.date: str = kw.get('date')  # 输入日期
+        self.date: str = kw.get('date', "")  # 输入日期
         self.time: str = kw.get('time')  # 输入时间
         self.cmd: str = kw.get('cmd')  # 执行命令
-        self.time_num: int = kw.get('time_num')  # 数字格式时间
+        self.time_num: int = kw.get('time_num', 0)  # 数字格式时间
         self.use_second: bool = kw.get('second')  # 使用毫秒作为时间
         self.date_only: bool = kw.get('date_only')  # 仅包含日期
         self.run_method: int = \
