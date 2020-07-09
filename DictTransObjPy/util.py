@@ -30,19 +30,20 @@ class ToDict:
         :param it_dict: 字典数据
         :return: 未使用的字段
         """
-        self._gen_reverse_mapping()
         return ToDict._from_dict(self, it_dict)
 
-    def _gen_reverse_mapping(self) -> None:
+    def _get_reverse_mapping(self) -> Dict[str, str]:
         """
         生成逆映射列表
         :return: None
         """
-        if not hasattr(self.__class__, '__reverse_dict_mapping__') and \
-                len(self.__class__.__dict_mapping__) > 0:
-            self.__class__.__reverse_dict_mapping__ = {}
+        if not hasattr(self.__class__, '__reverse_dict_mapping__') \
+                or not hasattr(self, '__reverse_dict_mapping__') \
+                or len(self.__class__.__dict_mapping__) > 0:
+            self.__reverse_dict_mapping__ = {}
             for (k, v) in self.__class__.__dict_mapping__:
-                self.__class__.__reverse_dict_mapping__[v] = k
+                self.__reverse_dict_mapping__[v] = k
+            return self.__reverse_dict_mapping__
 
     @staticmethod
     def _can_to_dict(obj) -> bool:
@@ -51,7 +52,7 @@ class ToDict:
         :param obj: .
         :return: .
         """
-        return issubclass(obj, ToDict)
+        return issubclass(obj.__class__, ToDict)
 
     @staticmethod
     def _from_dict(obj, it_dict: dict) -> dict:
